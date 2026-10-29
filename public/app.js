@@ -141,8 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 700);
 
     try {
-      // Get turnstile token if present
-      const turnstileToken = window.turnstile ? window.turnstile.getResponse() : undefined;
+      // Safely get turnstile token without throwing if no widget rendered
+      let turnstileToken;
+      try {
+        if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
+          turnstileToken = window.turnstile.getResponse() || undefined;
+        }
+      } catch {
+        turnstileToken = undefined;
+      }
 
       const response = await fetch('/.netlify/functions/scan', {
         method: 'POST',
@@ -153,7 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(stepInterval);
       progressBarFill.style.width = '100%';
 
-      const data = await response.json();
+      let data;
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        data = {
+          readable: false,
+          reason: `Server returned HTTP ${response.status} (${response.statusText || 'Error'}): ${text.slice(0, 150)}`
+        };
+      }
 
       // Artificial grace pause so visitor sees final step check
       setTimeout(() => {
@@ -162,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         urlInput.disabled = false;
 
         if (!response.ok && !data.readable) {
-          renderUnreadableState(targetUrl, domain, data.reason || data.error || 'Connection failed');
+          renderUnreadableState(targetUrl, domain, data.reason || data.error || `HTTP ${response.status} Error`);
         } else if (data.readable === false) {
           renderUnreadableState(targetUrl, domain, data.reason || 'Bot protection or JS execution required');
         } else {
@@ -175,11 +192,14 @@ document.addEventListener('DOMContentLoaded', () => {
       scanButton.disabled = false;
       urlInput.disabled = false;
 
-      renderUnreadableState(
-        targetUrl,
-        domain,
-        'Network error: Failed to reach the scanner service. Please verify your connection.'
-      );
+      console.error('[Scan Engine Error]:', err);
+
+      let errorMsg = err.message || 'Network request failed';
+      if (window.location.protocol === 'file:') {
+        errorMsg = 'Cannot make API calls using file:// protocol. Please open via http://localhost:8888 or your deployed Netlify URL.';
+      }
+
+      renderUnreadableState(targetUrl, domain, errorMsg);
     }
   }
 
@@ -427,7 +447,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btnSubmitLead.disabled = true;
     btnSubmitLead.querySelector('span').textContent = 'Submitting Request…';
 
-    const turnstileToken = window.turnstile ? window.turnstile.getResponse() : undefined;
+    let turnstileToken;
+    try {
+      if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
+        turnstileToken = window.turnstile.getResponse() || undefined;
+      }
+    } catch {
+      turnstileToken = undefined;
+    }
 
     const payload = {
       email,
