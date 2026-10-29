@@ -460,6 +460,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreValue = leadScoreHidden.value || '';
     const unreadableValue = leadUnreadableReasonHidden.value || '';
 
+    // Synchronize DOM hidden values so form elements match
+    if (leadDomainHidden) leadDomainHidden.value = domainValue;
+    if (leadScoreHidden) leadScoreHidden.value = scoreValue;
+    if (leadUnreadableReasonHidden) leadUnreadableReasonHidden.value = unreadableValue;
+
     // 1. Prepare Netlify Form submission (URL-encoded)
     // This allows Netlify to natively capture the submission and deliver an instant email
     // directly to your email inbox without requiring any third-party API keys or DNS setup.
@@ -467,8 +472,9 @@ document.addEventListener('DOMContentLoaded', () => {
     netlifyFormData.append('form-name', 'ai-visibility-leads');
     netlifyFormData.append('email', email);
     netlifyFormData.append('domain', domainValue);
-    if (scoreValue) netlifyFormData.append('score', scoreValue);
-    if (unreadableValue) netlifyFormData.append('unreadable_reason', unreadableValue);
+    netlifyFormData.append('score', scoreValue);
+    netlifyFormData.append('unreadable_reason', unreadableValue);
+    netlifyFormData.append('company_website_hp', ''); // Empty honeypot prevents Netlify bot filter rejection
     if (sellNote) netlifyFormData.append('what_they_sell', sellNote);
     netlifyFormData.append('consent', 'yes');
 
