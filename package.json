@@ -1,0 +1,33 @@
+{
+  "name": "telza-readiness-check",
+  "version": "1.0.0",
+  "description": "Telza Sales AI Search Readiness Check",
+  "main": "netlify/functions/scan.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx scripts/dev_server.ts",
+    "build": "tsc",
+    "test": "node --test --loader ts-node/esm --experimental-specifier-resolution=node tests/**/*.test.ts || npx tsx --test tests/**/*.test.ts",
+    "test:run": "tsx --test tests/**/*.test.ts"
+  },
+  "keywords": [
+    "ai-search",
+    "seo",
+    "readiness",
+    "telza"
+  ],
+  "author": "Telza Sales",
+  "license": "ISC",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.7",
+    "@netlify/functions": "^6.0.3",
+    "cheerio": "^1.2.0",
+    "ipaddr.js": "^2.5.0",
+    "robots-parser": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

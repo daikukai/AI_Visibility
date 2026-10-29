@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Broken Schema Example | Tech Tools</title>
+  <meta name="description" content="This site has broken JSON-LD syntax that should be handled gracefully without crashing the engine.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Broken Schema Co",
+    "broken_field": [ unquoted_value without closing
+  }
+  </script>
+</head>
+<body>
+  <h1>Broken Schema Example Site</h1>
+  <p>Our website tests how the scanner deals with invalid schema syntax.</p>
+</body>
+</html>

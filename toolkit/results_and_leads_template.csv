@@ -1,0 +1,32 @@
+# ==============================================================================
+# TAB 1: LEADS TRACKING LOG (Copy each incoming lead alert into this table)
+# ==============================================================================
+Lead ID,Created Date,Business Email,Domain,Readiness Score,What They Sell,Status (new/in_progress/report_sent/skipped),Report Sent Date,Follow-up Day 3 Sent,Follow-up Day 10 Sent,Notes & Next Action
+lead_20261029_001,2026-10-29,sarah@acmeanalytics.com,acmeanalytics.com,72,B2B revenue forecasting software,report_sent,2026-10-30,2026-11-02,pending,Good candidate for schema and FAQ optimization package.
+lead_20261029_002,2026-10-29,marcus@vanguardlegal.co.uk,vanguardlegal.co.uk,58,Corporate law and venture financings,in_progress,,pending,pending,Unreadable automated scan due to CF; manual check in progress.
+lead_20261029_003,2026-10-30,elena@apexlogistics.com,apexlogistics.com,84,Freight forwarding and customs clearance,new,,pending,pending,High readiness score; focus report on competitor citation gaps.
+
+# ==============================================================================
+# TAB 2: MANUAL AUDIT CITATION MATRIX (Execute 1 per report)
+# Company: acmeanalytics.com | Evaluated: 2026-10-30 | Kai Protocol v1.0
+# Values for Engine Cells: Mentioned | Cited (Linked) | Absent
+# ==============================================================================
+Question #,Prompt Executed,ChatGPT Search,Perplexity Pro,Google Gemini,Claude 3.5,Competitors Mentioned by AI,Top Domains Cited by AI
+Q1 (Category),"Who are the top revenue forecasting tools for SaaS in 2026?",Absent,Absent,Mentioned,Absent,"Clari, Gong, BoostUp","g2.com, forbes.com, techcrunch.com"
+Q2 (Category),"Which B2B software provides real-time pipeline forecasting?",Absent,Cited,Absent,Absent,"Salesforce, Clari, InsightSquared","gartner.com, perplexity.ai"
+Q3 (Category),"What are the modern alternatives to legacy ERP forecasting?",Absent,Absent,Absent,Absent,"Pigment, Anaplan, Cube Software","capterra.com, substack.com"
+Q4 (Category),"How do SaaS CFOs select revenue analytics platforms?",Absent,Absent,Absent,Absent,"Subscript, Maxio, Clari","saastr.com, linkedin.com"
+Q5 (Category),"Best automated ARR forecasting tools with HubSpot sync",Mentioned,Cited,Mentioned,Absent,"Cacheflow, RevOps.io","hubspot.com/ecosystem"
+Q6 (Category),"Which software tools automate board-level revenue decks?",Absent,Absent,Absent,Absent,"Runway, Mosaic.tech, Causal","techcrunch.com, producthunt.com"
+Q7 (Comparison),"Compare Acme Analytics vs Clari for mid-market teams",Mentioned,Cited,Mentioned,Mentioned,"Clari","trustradius.com, g2.com"
+Q8 (Comparison),"What are the pros and cons of Acme Analytics?",Mentioned,Cited,Mentioned,Mentioned,"None (direct brand prompt)","acmeanalytics.com, g2.com"
+Q9 (Brand Entity),"What is Acme Analytics and who is its target customer?",Mentioned,Cited,Mentioned,Mentioned,"None (direct brand prompt)","acmeanalytics.com, crunchbase.com"
+Q10 (Brand Entity),"What do software reviews say about Acme Analytics?",Absent,Cited,Absent,Mentioned,"None (direct brand prompt)","g2.com, capterra.com"
+
+# ==============================================================================
+# SUMMARY METRICS FOR CLIENT REPORT
+# Total Prompts: 10
+# Brand Citations / Mentions: Perplexity (6/10), ChatGPT (3/10), Gemini (4/10), Claude (3/10)
+# Overall AI Mention Rate: 40%
+# Primary Citation Gaps: Absent from Category Discovery questions Q1, Q3, Q4, Q6.
+# Dominant Competitors Cited: Clari (5 mentions), Gong (3 mentions), Pigment (2 mentions)
