@@ -456,12 +456,29 @@ document.addEventListener('DOMContentLoaded', () => {
       turnstileToken = undefined;
     }
 
+    const domainValue = leadDomainHidden.value || sanitizeInputUrl(urlInput.value);
+    const scoreValue = leadScoreHidden.value || '';
+    const unreadableValue = leadUnreadableReasonHidden.value || '';
+
+    // 1. Prepare Netlify Form submission (URL-encoded)
+    // This allows Netlify to natively capture the submission and deliver an instant email
+    // directly to your email inbox without requiring any third-party API keys or DNS setup.
+    const netlifyFormData = new URLSearchParams();
+    netlifyFormData.append('form-name', 'ai-visibility-leads');
+    netlifyFormData.append('email', email);
+    netlifyFormData.append('domain', domainValue);
+    if (scoreValue) netlifyFormData.append('score', scoreValue);
+    if (unreadableValue) netlifyFormData.append('unreadable_reason', unreadableValue);
+    if (sellNote) netlifyFormData.append('what_they_sell', sellNote);
+    netlifyFormData.append('consent', 'yes');
+
+    // 2. Prepare JSON payload for the serverless function
     const payload = {
       email,
-      domain: leadDomainHidden.value || sanitizeInputUrl(urlInput.value),
-      url: `https://${leadDomainHidden.value || sanitizeInputUrl(urlInput.value)}`,
-      score: leadScoreHidden.value || null,
-      unreadable_reason: leadUnreadableReasonHidden.value || null,
+      domain: domainValue,
+      url: `https://${domainValue}`,
+      score: scoreValue || null,
+      unreadable_reason: unreadableValue || null,
       what_they_sell: sellNote || null,
       consent: true,
       turnstileToken,
@@ -469,19 +486,33 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     try {
-      const leadResponse = await fetch('/.netlify/functions/lead', {
+      // Dispatch Netlify form submission and function handler concurrently
+      const netlifyFormPost = fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: netlifyFormData.toString()
+      }).catch(err => console.warn('Netlify form notice:', err));
+
+      const functionPost = fetch('/.netlify/functions/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
-      });
+      }).catch(err => console.warn('Function notice:', err));
 
-      const leadData = await leadResponse.json();
+      const [, funcRes] = await Promise.all([netlifyFormPost, functionPost]);
 
-      if (!leadResponse.ok) {
-        btnSubmitLead.disabled = false;
-        btnSubmitLead.querySelector('span').textContent = 'Request AI Visibility Report';
-        emailError.textContent = leadData.error || 'Failed to submit request. Please try again.';
-        return;
+      if (funcRes && funcRes.ok === false) {
+        try {
+          const leadData = await funcRes.json();
+          if (leadData && leadData.error && funcRes.status === 429) {
+            btnSubmitLead.disabled = false;
+            btnSubmitLead.querySelector('span').textContent = 'Request AI Visibility Report';
+            emailError.textContent = leadData.error;
+            return;
+          }
+        } catch {
+          // If response body can't be parsed, treat as completed
+        }
       }
 
       // Success transition

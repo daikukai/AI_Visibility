@@ -238,8 +238,9 @@
             </p>
           </div>
 
-          <!-- Lead Capture Form -->
-          <form id="leadForm" class="lead-form" novalidate>
+          <!-- Lead Capture Form (Powered by Netlify Forms for instant email notifications) -->
+          <form id="leadForm" name="ai-visibility-leads" method="POST" data-netlify="true" netlify-honeypot="company_website_hp" class="lead-form" novalidate>
+            <input type="hidden" name="form-name" value="ai-visibility-leads" />
             <input type="hidden" id="leadDomainHidden" name="domain">
             <input type="hidden" id="leadScoreHidden" name="score">
             <input type="hidden" id="leadUnreadableReasonHidden" name="unreadable_reason">
@@ -285,7 +286,7 @@
 
             <div class="form-group consent-group">
               <label class="checkbox-label">
-                <input type="checkbox" id="consentCheckbox" required />
+                <input type="checkbox" id="consentCheckbox" name="consent" value="yes" required />
                 <span>
                   I agree to receive my AI visibility report and relevant follow-up from Telza Sales. See our <a href="/privacy.html" target="_blank">Privacy Notice</a>.
                 </span>

@@ -150,7 +150,7 @@ export const handler: Handler = async (event: HandlerEvent, context: HandlerCont
       body: JSON.stringify({
         success: true,
         leadId: lead.id,
-        message: 'Lead captured successfully. Report will be emailed within 24-48 hours.'
+        message: 'Lead captured successfully. Your AI visibility report will be emailed to you.'
       })
     };
   } catch (err: any) {
