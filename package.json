@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx scripts/dev_server.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "test": "node --test --loader ts-node/esm --experimental-specifier-resolution=node tests/**/*.test.ts || npx tsx --test tests/**/*.test.ts",
     "test:run": "tsx --test tests/**/*.test.ts"
   },
