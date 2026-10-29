@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!leadResponse.ok) {
         btnSubmitLead.disabled = false;
-        btnSubmitLead.querySelector('span').textContent = 'Request Manual AI Visibility Report';
+        btnSubmitLead.querySelector('span').textContent = 'Request AI Visibility Report';
         emailError.textContent = leadData.error || 'Failed to submit request. Please try again.';
         return;
       }
@@ -490,9 +490,8 @@ document.addEventListener('DOMContentLoaded', () => {
       leadSuccessCard.classList.remove('hidden');
       leadSuccessCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
-      // If the lead endpoint is not yet live (Phase 3), handle gracefully
       btnSubmitLead.disabled = false;
-      btnSubmitLead.querySelector('span').textContent = 'Request Manual AI Visibility Report';
+      btnSubmitLead.querySelector('span').textContent = 'Request AI Visibility Report';
       confirmedEmailDisplay.textContent = email;
       leadForm.classList.add('hidden');
       leadSuccessCard.classList.remove('hidden');

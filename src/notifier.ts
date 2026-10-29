@@ -54,7 +54,7 @@ export async function sendLeadAlert(lead: LeadRecord): Promise<AlertResult> {
       </table>
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 20px;">
-        <h4 style="margin: 0 0 8px 0; color: #111827; font-size: 14px;">Next Steps for Kai:</h4>
+        <h4 style="margin: 0 0 8px 0; color: #111827; font-size: 14px;">Next Steps for Telza Sales Team:</h4>
         <ol style="margin: 0; padding-left: 20px; color: #4b5563; font-size: 13px; line-height: 1.6;">
           <li>Copy lead details into the working results spreadsheet.</li>
           <li>Execute the 6 category + 2 comparison prompts in ChatGPT, Perplexity, and Gemini.</li>
